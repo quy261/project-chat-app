@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if
+          request.time < timestamp.date(2023, 3, 11);
+    }
+    //A read  is : get and list, 
+      //A write is : create, update, and delete. you can separate them if you want
+
+      match /posts/{post} {  //this applies to post collection
+         allow read;
+         allow write : if request.auth != null;
+      }
+
+      // other collections ....
+  }
+}
